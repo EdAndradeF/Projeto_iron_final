@@ -1,12 +1,24 @@
-Kaggle competição
+## Kaggle Datasets recomendação:
 
-​	.web scraping
+ 
 
-​		.coleta e pre-tratamento de dados do site para criação de tabela
+​	Sistema de recomendação para projetos novos baseado em Datasets atualizados.
 
-​	.criação das tabelas e estrutura do banco de dados 
 
-​	. conexao com banco de dados 
 
-​	 
+### Ferramentas:
+
+##### Python
+
+​		.	Selenium 
+
+​		.	BeautifullSoup  
+
+​		.	Pandas
+
+​		.	Scipy
+
+​		.	Sklearn
+
+##### Tableau
 

@@ -6,11 +6,17 @@ from driver_chrome import Chrome
 from backup import save
 import selenium
 
-#todo converter tudo para selenium
+
+
+# todo converter tudo para selenium
+
+
+
 class DataSet:
+
     site = 'https://www.kaggle.com'
 
-    def __init__(self, drive, ordem='hotness', pag=1):
+    def __init__(self, drive, ordem='hotness', pag=1, save_backup=False):
 
         '''
 
@@ -33,14 +39,18 @@ class DataSet:
         self.pagina = f'page={pag}'           # pagina sendo respada
         self.url = f'{self.site}{self.secao}?{self.ordem}&{self.pagina}'
         print(self.url)
+
+
         self.driver = drive
         self.sopa = BeautifulSoup(self.driver.acessa(self.url, seg=0), 'lxml')
 
-        self.href = self.links()                                                        # lista com as partes finais da urls das publicacoes
-        self.posts_list = [Publica(x, self.driver) for x in tqdm(self.href, desc='PUBICACAO')]       # lista com dados de cada publicacao
-        self.dataframe = pd.DataFrame(x.data for x in self.posts_list)
+        self.href = self.links()   # lista com as partes finais da urls das publicacoes
+        self.posts_list = [Publica(x, self.driver) for x in tqdm(self.href, desc='PUBICACAO')]
+        self.dataframe = pd.DataFrame(x.data for x in self.posts_list)  # lista com dados de cada publicacao
         self.date = datetime.today().date()
-        self.dataframe.to_csv(f'data/dataset{self.secao}_{self.date}_{self.ordem}_{pag}.csv')
+
+        if save_backup:
+            self.dataframe.to_csv(f'data/dataset{self.secao}_{self.date}_{self.ordem}_{pag}.csv')
 
 
 
@@ -119,12 +129,9 @@ class Publica(DataSet):
         self.data['notebook_prata'] = body.find_all('span', {'type': 'silver'})[0].text
         self.data['notebook_bronze'] = body.find_all('span', {'type': 'bronze'})[0].text
 
-
-
         self.data['discussao_ouro'] = body.find_all('span', {'type': 'gold'})[1].text
         self.data['discussao_prata'] = body.find_all('span', {'type': 'silver'})[1].text
         self.data['discussao_bronze'] = body.find_all('span', {'type': 'bronze'})[1].text
-
 
 
     def minitab(self, body, conts):
@@ -144,11 +151,10 @@ class Publica(DataSet):
 
 
 if __name__ == '__main__':
+    dvr = Chrome()
+    d7 = pd.concat(DataSet(dvr, 'updated', x).dataframe for x in range(1, 5))
 
-
-
-    d7 = DataSet('hotness')
-
+    dvr.bye()
 
 
     stap= 'dsfsdf'
